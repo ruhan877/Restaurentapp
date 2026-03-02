@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    environment:
+      - NEXT_PUBLIC_API_BASE=http://localhost/api
+    ports:
+      - "3000:3000"
+  server:
+    build: ./server
+    ports:
+      - "4000:4000"
+  nginx:
+    image: nginx:1.27-alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+      - server
